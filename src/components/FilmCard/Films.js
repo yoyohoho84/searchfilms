@@ -30,6 +30,7 @@ const FilmCard = (props) => {
                 <ButtonCust
                     btnName={props.favoritesbtn}
                     style={styles.btn}
+                    onClick={props.onClick}
                 />
             </div>
         </div>
@@ -1746,15 +1747,37 @@ class Films extends Component {
                 }
             ],
             name: '',
-            exit: false
+            exit: false,
+            bookmarksActive: false,
+            bookmarksPassive: true
         };
         this.getFilmName = this.getFilmName.bind(this);
-        this.showExit = this.getFilmName.bind(this);
+        this.showBookmarks = this.showBookmarks.bind(this);
     }
 
     componentDidMount() {
         this.getFilmName();
     }
+
+    showBookmarks = () => {
+        const {bookmarksActive} = this.state;
+        if (bookmarksActive === false){
+            this.setState({
+                bookmarksActive: true,
+                bookmarksPassive: false
+            })
+        }
+        else {
+            this.setState({
+                bookmarksActive: false,
+                bookmarksPassive: true
+            })
+        }
+
+
+
+
+    };
 
     getFilmName = () => {
         const {films, number} = this.state;
@@ -1766,12 +1789,13 @@ class Films extends Component {
     };
 
     render() {
-        const {name, number} = this.state;
+        const {name, number,bookmarksActive} = this.state;
         return (
             <div className={styles.header}>
                 <FilmCard
                     title={name}
-                    favoritesbtn={'Добавить в закладки'}
+                    favoritesbtn={bookmarksActive ? 'Добавить в закладки' : 'Убрать из закладок'}
+                    onClick={this.showBookmarks}
                 />
             </div>
         );

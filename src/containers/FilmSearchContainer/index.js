@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import styles from "./FilmSearchContainer.module.sass";
 import ButtonCust from "../../components/ButtonCust";
 import FilmItem1 from "../../components/FilmItem1";
-
+import InputSearch from "../../components/InputSearch";
 
 class FilmSearchContainer extends Component {
     constructor(props) {
@@ -1739,63 +1739,66 @@ class FilmSearchContainer extends Component {
             ],
             filtered: [], // отфильтрованный список
             favorites: [],
-            isTab1: true,
-            isTab2: false,
+            isTab1: 'true',
+            isTab2: 'false',
             bookmarksActive: false,
-            bookmarksPassive: true
+            bookmarksPassive: true,
+
 
         };
         this.onChangeHandler = this.onChangeHandler.bind(this);
         this.showTab1 = this.showTab1.bind(this);
         this.showTab2 = this.showTab2.bind(this);
-        // this.showBookmarks = this.showBookmarks.bind(this);
         this.findCorrect = this.findCorrect.bind(this);
         this.pickFavorite = this.pickFavorite.bind(this);
-        // this.setLocalStorage = this.setLocalStorage.bind(this);
+
     }
 
 
     componentDidMount() {
 
-        const isTab1 = localStorage.getItem('isTab1'); // получаем по key value из localStorage
-        const isTab2 = localStorage.getItem('isTab2'); // получаем по key value из localStorage
-        // this.setState({isTab1:this.state.isTab1, isTab2:this.state.isTab2});
-        if(isTab1 !== '' || isTab1 !== '')
-        {
-            this.setState({isTab1: isTab1, isTab2: isTab2});
+        const isTab1loc = localStorage.getItem('isTab1'); // получаем по key value из localStorage
+        const isTab2loc = localStorage.getItem('isTab2'); // получаем по key value из localStorage
+        if (localStorage.length === 0) {
+            this.setState({
+                isTab1: 'true',
+                isTab2: 'false'
+            });
         }
         else {
-            this.setState({isTab1: this.state.isTab1, isTab2: this.state.isTab2});
+            this.setState({
+                isTab1: isTab1loc,
+                isTab2: isTab2loc
+            });
         }
 
 
+        // const isTab1 = localStorage.getItem('isTab1'); // получаем по key value из localStorage
+        // const isTab2 = localStorage.getItem('isTab2'); // получаем по key value из localStorage
+        // this.setState({isTab1:this.state.isTab1, isTab2:this.state.isTab2});
+        // if (isTab1 && isTab2) {
+        //     this.setState({
+        //         isTab1, isTab2
+        //     });
+        // }
 
-        this.setState({
-            filtered: this.state.films
-
-        });
-        // console.log(isTab1);
-
-    }
-
-    componentDidUpdate(prevState) {
-        // const {isTab1, isTab2} = this.state;
-        // if (isTab1 !== prevState.isTab1) {
+        // if (localStorage.length === 0) {
+        //     this.setState({
+        //         isTab1: this.state.isTab1,
+        //         isTab2: this.state.isTab2
+        //     });
+        // } else {
         //     this.setState({
         //         isTab1: isTab1,
         //         isTab2: isTab2
         //     });
         // }
-        console.log(this.state.favorites);
 
+        this.setState({
+            filtered: this.state.films
 
+        });
     }
-
-    // setLocalStorage = () => {
-    //     const { isTab1,isTab2 } = this.state;
-    //     localStorage.setItem('isTab1', isTab1);
-    //     localStorage.setItem('isTab2', isTab2);
-    // };
 
     onChangeHandler = (e) => {
         const {films, filtered} = this.state;
@@ -1847,26 +1850,52 @@ class FilmSearchContainer extends Component {
         // const {isTab1, isTab2} = this.state;
         localStorage.setItem('isTab1', 'true'); // устанавливаем key и value в localStorage
         localStorage.setItem('isTab2', 'false'); // устанавливаем key и value в localStorage
+        const isTab1loc = localStorage.getItem('isTab1'); // получаем по key value из localStorage
+        const isTab2loc = localStorage.getItem('isTab2'); // получаем по key value из localStorage
+
+        this.setState({
+            isTab1: isTab1loc,
+            isTab2: isTab2loc
+        });
 
 
         console.log("tab 1");
-        this.setState({
-            isTab1: true,
-            isTab2: false
-        })
+        console.log("isTab1loc: ", isTab1loc);
+        console.log("isTab2loc: ", isTab2loc);
+        // console.log("isTab1: ",isTab1);
+        // console.log("isTab2: ",isTab2);
+        // console.log("isTab1Set: ",isTab1Set);
+        // console.log("isTab1Set: ",isTab2Set);
+        // this.setState({
+        //     isTab1: true,
+        //     isTab2: false
+        // })
     };
 
     showTab2 = () => {
-        // const {isTab1, isTab2} = this.state;
+        const {isTab1, isTab2} = this.state;
         localStorage.setItem('isTab1', 'false'); // устанавливаем key и value в localStorage
         localStorage.setItem('isTab2', 'true'); // устанавливаем key и value в localStorage
+        const isTab1loc = localStorage.getItem('isTab1'); // получаем по key value из localStorage
+        const isTab2loc = localStorage.getItem('isTab2'); // получаем по key value из localStorage
+
+        this.setState({
+            isTab1: isTab1loc,
+            isTab2: isTab2loc
+        });
 
 
         console.log("tab 2");
-        this.setState({
-            isTab2: true,
-            isTab1: false,
-        })
+        console.log("isTab1loc: ", isTab1loc);
+        console.log("isTab2loc: ", isTab2loc);
+        console.log("isTab1: ", isTab1);
+        console.log("isTab2: ", isTab2);
+        // console.log("isTab1Set: ",isTab1Set);
+        // console.log("isTab1Set: ",isTab2Set);
+        // this.setState({
+        //     isTab2: true,
+        //     isTab1: false,
+        // })
     };
 
     findCorrect = (condition, array) => {
@@ -1934,6 +1963,7 @@ class FilmSearchContainer extends Component {
             )
         });
 
+
         const renderFavorites = this.state.favorites.map((item, index) => {
             const {title, id} = item;
 
@@ -1955,24 +1985,26 @@ class FilmSearchContainer extends Component {
                             <ButtonCust
                                 onClick={this.showTab1}
                                 btnName='ФИЛЬМЫ'
-                                style={`${isTab1 ? styles.activeBtn : styles.btn} }`}
+                                style={`${isTab1 === 'true' ? styles.activeBtn : styles.btn} }`}
                             />
                             <ButtonCust
                                 onClick={this.showTab2}
                                 btnName='ЗАКЛАДКИ'
-                                style={`${isTab2 ? styles.activeBtn : styles.btn} }`}
+                                style={`${isTab2 === 'true' ? styles.activeBtn : styles.btn} }`}
                             />
                         </div>
 
 
-                        {isTab1 ?
+                        {isTab1 === 'true' ?
                             <div className={styles.films}>
                                 <div className={styles.searchGrid}>
-                                    <input className={styles.input}
-                                           onChange={this.onChangeHandler}
-                                           type="text"
-                                           placeholder={'Введите название фильма'}
+                                    <InputSearch
+                                        style={styles.input}
+                                        handler={this.onChangeHandler}
+                                        placeholder={'Введите название фильма'}
+                                        type="text"
                                     />
+
                                 </div>
 
                                 <div className={styles.filmsGrid}>
@@ -1986,7 +2018,7 @@ class FilmSearchContainer extends Component {
                             ''
                         }
 
-                        {isTab2 && favorites.length > 0 ?
+                        {isTab2 === 'true' && favorites.length > 0 ?
 
                             <div className={styles.films}>
                                 <div className={styles.searchGrid}>
